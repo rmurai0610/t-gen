@@ -21,7 +21,11 @@ def main():
     contest_questions = []
     if len(sys.argv) == 2:
         # Check for contest name + number
-        contest_name, contest_number = [i for i in re.split(r'(\d+)', sys.argv[1]) if i]
+        contest = [i for i in re.split(r'(\d+)', sys.argv[1]) if i]
+        if len(contest) != 2:
+            print('Invalid contest name {}'.format(sys.argv[1]))
+            return
+        contest_name, contest_number = contest
         if contest_name == 'ABC':
             contest_questions = list('ABCDEF')
         elif contest_name == 'ARC':
@@ -29,7 +33,7 @@ def main():
         elif contest_name == 'AGC':
             contest_questions = list('ABCDEF')
         else:
-            print('Contest name: {} not recognized. Please enter the question names', contest_name)
+            print('Contest name: {} not recognized. Please enter the full questions'.format(contest_name))
             return
 
     if len(sys.argv) == 3:
@@ -48,7 +52,7 @@ def main():
     for contest_question in contest_questions:
         copy_no_override(os.path.join(template_dir, 'template.cc'), os.path.join(contest_dir, contest_question + '.cc'))
     # Copy template files into directory
-    for template_file in ['CMakeLists.txt', 'Makefile', 'test.sh']:
+    for template_file in ['CMakeLists.txt', 'Makefile', 'test.py']:
         copy_no_override(os.path.join(template_dir, template_file), os.path.join(contest_dir, template_file))
 
 if __name__ == '__main__':

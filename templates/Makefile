@@ -6,7 +6,7 @@ all:
 	cd ..;          \
 
 test:
-	./test.sh
+	./test.py
 
 clean:
 	cd build && make clean && cd ..
