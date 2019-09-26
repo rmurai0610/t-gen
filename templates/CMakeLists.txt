@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.8)
+project(t-gen)
+file(GLOB SRCS ${PROJECT_SOURCE_DIR}/*.cc)
+foreach(SRC ${SRCS})
+  get_filename_component(EXE "${SRC}" NAME_WE)
+  add_executable(${EXE} ${SRC})
+endforeach(SRC)
