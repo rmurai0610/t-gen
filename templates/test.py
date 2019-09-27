@@ -17,19 +17,25 @@ def main():
             print('Skip problem {}'.format(problem))
             continue
         success = True
+        num_q = 0
         for i, (test_input, test_output) in enumerate(test_cases[problem]):
             print('Case {}-{}'.format(problem, i + 1))
             p = subprocess.run(['./build/{}'.format(problem)], stdout=subprocess.PIPE,
                     input=test_input, encoding='ascii')
             output = p.stdout
-            if test_output != '' and not output.endswith('\n'):
+            if test_output == '':
+                continue
+            if not output.endswith('\n'):
                 print('\tExpected newline at end of output')
                 success = False
             output = output.rstrip()
             if output != test_output:
                 print('\tExpected {}, but got {}'.format(test_output, output))
                 success = False
-        if success:
+            num_q += 1
+        if num_q == 0:
+            print('Problem {} has no test'.format(problem))
+        elif success:
             print('Passed problem {}'.format(problem))
         else:
             print('Failed problem {}'.format(problem))

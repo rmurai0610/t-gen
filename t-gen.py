@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, sys, re, shutil
+import os, sys, re, shutil, json
 def copy_no_override(src, dst):
     if os.path.exists(dst):
         # if file exists, do not copy
@@ -22,12 +22,19 @@ def replace_test_placeholder(filepath, problems):
     with open(filepath, 'w') as f:
         f.write(test_file)
 
+def read_config(config_file, key):
+    with open(config_file) as f:
+        config = json.load(f)
+        if key not in config:
+            sys.exit("{} not found in settings.json".format(key), 1)
+        return config[key]
+
 def main():
     if len(sys.argv) == 1 or '-h' in sys.argv:
         print('-h                      Displays help')
         print('./t-gen.py ABC001       Infers the number of questions from the contest name')
         print('./t-gen.py ABC001 ABCD  Manually specify the number of questions')
-        return
+        sys.exit(1)
 
     contest_name = ''
     contest_number = ''
@@ -36,8 +43,7 @@ def main():
         # Check for contest name + number
         contest = [i for i in re.split(r'(\d+)', sys.argv[1]) if i]
         if len(contest) != 2:
-            print('Invalid contest name {}'.format(sys.argv[1]))
-            return
+            sys.exit('Invalid contest name {}'.format(sys.argv[1]))
         contest_name, contest_number = contest
         if contest_name == 'ABC':
             contest_questions = list('ABCDEF')
@@ -46,8 +52,7 @@ def main():
         elif contest_name == 'AGC':
             contest_questions = list('ABCDEF')
         else:
-            print('Contest name: {} not recognized. Please enter the full questions'.format(contest_name))
-            return
+            sys.exit('Contest name: {} not recognized. Please enter the full questions'.format(contest_name), 1)
 
     if len(sys.argv) == 3:
         # Check for contest name + number + questions
@@ -56,8 +61,10 @@ def main():
 
 
     # Set up directory
-    root_dir = os.path.expanduser('~/project/atcoder')
-    template_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates')
+    project_dir = os.path.dirname(os.path.realpath(__file__))
+    config_file = os.path.join(project_dir, 'settings.json')
+    root_dir = os.path.expanduser(read_config(config_file, 'root'))
+    template_dir = os.path.join(project_dir, 'templates')
     contest_dir = os.path.join(root_dir, contest_name + contest_number)
     os.makedirs(contest_dir, exist_ok=True)
 

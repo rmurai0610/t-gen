@@ -41,3 +41,5 @@ To add tests, modify `test.py`
   .
 ]
 ```
+
+Root directory for the templates are configurable in `settings.json`
