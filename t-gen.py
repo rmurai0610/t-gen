@@ -15,7 +15,7 @@ def replace_test_placeholder(filepath, problems):
     test_cases = ''
     deliminator = ''
     for problem in problems:
-        test_cases = test_cases + deliminator + '    \'{}\': [\n    [\'\', \'\']\n    ]'.format(problem)
+        test_cases = test_cases + deliminator + '    \'{}\': [\n        [\'\', \'\']\n    ]'.format(problem)
         deliminator = ',\n'
     test_file = test_file.replace('\'PLACEHOLDER_TEST_CASES\'', test_cases)
     test_file = test_file.replace('PLACEHOLDER_PROBLEMS', ''.join(problems))

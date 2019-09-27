@@ -15,7 +15,7 @@ $ ./t-gen ABC001 # Only for atcoder contests
     ├── CMakeLists.txt
     ├── Makefile
     └── test.py
-or 
+or
 $ ./t-gen ABC001 ABCD
 .
 └── ABC001
