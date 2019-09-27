@@ -3,14 +3,12 @@
 import sys, os
 
 test_cases = {
-    'A': [
-        ['', ''],
-    ],
+'PLACEHOLDER_TEST_CASES'
 }
 
 
 def main():
-    problems = list('ABCDEF')
+    problems = list('PLACEHOLDER_PROBLEMS')
     if len(sys.argv) > 1:
         problems = list(sys.argv[1])
 

@@ -8,6 +8,19 @@ def copy_no_override(src, dst):
         return
     shutil.copy(src, dst)
 
+def replace_test_placeholder(filepath, problems):
+    test_file = ''
+    with open(filepath, 'r') as f:
+        test_file = f.read()
+    test_cases = ''
+    deliminator = ''
+    for problem in problems:
+        test_cases = test_cases + deliminator + '    \'{}\': [\n    [\'\', \'\']\n    ]'.format(problem)
+        deliminator = ',\n'
+    test_file = test_file.replace('\'PLACEHOLDER_TEST_CASES\'', test_cases)
+    test_file = test_file.replace('PLACEHOLDER_PROBLEMS', ''.join(problems))
+    with open(filepath, 'w') as f:
+        f.write(test_file)
 
 def main():
     if len(sys.argv) == 1 or '-h' in sys.argv:
@@ -54,6 +67,8 @@ def main():
     # Copy template files into directory
     for template_file in ['CMakeLists.txt', 'Makefile', 'test.py']:
         copy_no_override(os.path.join(template_dir, template_file), os.path.join(contest_dir, template_file))
+    # Fill placeholder for the test file
+    replace_test_placeholder(os.path.join(contest_dir, 'test.py'), contest_questions)
 
 if __name__ == '__main__':
     main()
