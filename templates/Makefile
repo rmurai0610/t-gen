@@ -5,10 +5,15 @@ all:
 	make -j;        \
 	cd ..;          \
 
+ifeq (test,$(firstword $(MAKECMDGOALS)))
+  TEST_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(TEST_ARGS):;@:)
+endif
+
 test:
-	./test.py
+	./test.py $(TEST_ARGS)
 
 clean:
 	cd build && make clean && cd ..
 
-.PHONY: test clean
+.PHONY: test clean $(TEST_ARGS)
